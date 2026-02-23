@@ -1,7 +1,10 @@
 
-import {Command} from 'commander'
+import { Command } from 'commander'
+import { parse } from './parsers/parser.js';
+import {stylish} from './formatters/stylish.js'
+import isPlainObject from './functions.js'
 
-export default () => {
+const gendiff = () => {
   const c = new Command()
   c
     .name('string-gendiff')
@@ -12,9 +15,44 @@ export default () => {
     .argument('filepath2')
     .action((filepath1, filepath2) => {
       const options = c.opts()
-      console.log(`format ${options.format}`)
-      console.log(`filepathes: ${filepath1} ${filepath2}`)
+      const diff = makeDiff(parse(filepath1), parse(filepath2))
+     stylish(diff)
     })
-
+  
   c.parse()
 }
+
+const makeDiff = (file1, file2) => {
+  const sortedKeys = new Set(
+    [...Object.keys(file1), ...Object.keys(file2)]
+    .sort()
+  )
+  
+  const diff = {}
+  sortedKeys.forEach(
+    key => {
+      const in1 = key in file1
+      const in2 = key in file2
+      const val1 = file1[key]
+      const val2 = file2[key]
+      if (!in2) {
+        diff[key] = {status: 'deleted', data: file1[key]}
+      }
+      else if (!in1) {
+        diff[key] = {status: 'added', data: file2[key]}
+      }
+      else {
+        if (isPlainObject(val1) && isPlainObject(val2)) {
+          diff[key] = {status: 'nested', data: makeDiff(val1, val2)}
+        } else if (val1 ===val2) {
+          diff[key] = {status: 'unchanged', data: file1[key]}
+        } else {
+          diff[key] = {status: 'unchanged', data: [file1[key], file2[key]]}
+        }
+      }
+    }
+  )
+  return diff
+}
+
+export { gendiff }
