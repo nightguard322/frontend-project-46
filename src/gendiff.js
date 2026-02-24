@@ -16,7 +16,7 @@ const gendiff = () => {
     .action((filepath1, filepath2) => {
       const options = c.opts()
       const diff = makeDiff(parse(filepath1), parse(filepath2))
-     stylish(diff)
+     console.log(JSON.stringify(stylish(diff), null, 2))
     })
   
   c.parse()
@@ -47,7 +47,7 @@ const makeDiff = (file1, file2) => {
         } else if (val1 ===val2) {
           diff[key] = {status: 'unchanged', data: file1[key]}
         } else {
-          diff[key] = {status: 'unchanged', data: [file1[key], file2[key]]}
+          diff[key] = {status: 'changed', data: [file1[key], file2[key]]}
         }
       }
     }

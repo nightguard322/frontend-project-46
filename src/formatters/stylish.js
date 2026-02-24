@@ -4,26 +4,31 @@ export const stylish = (diff) => {
     const indents = {
         'added': '+',
         'deleted': '-',
-        'changed': ' ',
+        'common': ' ',
         'unchanged': ' '
     }
-    console.log(diff)
-    return Object.keys(diff.data).reduce(
+    return Object.keys(diff).reduce(
         (acc, key) => {
-            if (diff[key] === 'changed') {
+            const val = diff[key]
+            const status = val.status
+            const data = val.data
+            console.log(status)
+            if (status === 'changed') {
                 const delKey = `${indents['deleted']} ${key}`
                 const addKey = `${indents['added']} ${key}`
-                acc[delKey] = file1[key]
-                acc[addKey] = file2[key]
-            } else if (isPlainObject(diff[key])) {
-                
+                const [oldValue, newValue] = data
+                acc[delKey] = oldValue
+                acc[addKey] = newValue
+            } else if (status === 'nested') {
+                const children = stylish(data)
+                const newKey = `${indents['common']} ${key}`
+                acc[newKey] = children
             } else {
-                const status = diff[key]
-                const indent = indents[status]
-                const newKey = `${indent} ${key}`
-                acc[newKey] = data[key]
+                const newKey = `${indents[status]} ${key}`
+                acc[newKey] = data
             }
             return acc
-        }
+            }
+        
     , {})
 }
