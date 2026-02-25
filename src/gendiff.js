@@ -16,7 +16,8 @@ const gendiff = () => {
     .action((filepath1, filepath2) => {
       const options = c.opts()
       const diff = makeDiff(parse(filepath1), parse(filepath2))
-     console.log(JSON.stringify(stylish(diff), null, 2))
+    // console.log(JSON.stringify(diff, null, 2))
+    console.log(stylish(diff))
     })
   
   c.parse()
@@ -44,7 +45,7 @@ const makeDiff = (file1, file2) => {
       else {
         if (isPlainObject(val1) && isPlainObject(val2)) {
           diff[key] = {status: 'nested', data: makeDiff(val1, val2)}
-        } else if (val1 ===val2) {
+        } else if (val1 === val2) {
           diff[key] = {status: 'unchanged', data: file1[key]}
         } else {
           diff[key] = {status: 'changed', data: [file1[key], file2[key]]}
