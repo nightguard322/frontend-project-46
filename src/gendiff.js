@@ -37,18 +37,18 @@ const makeDiff = (file1, file2) => {
       const val1 = file1[key]
       const val2 = file2[key]
       if (!in2) {
-        diff[key] = {status: 'deleted', data: file1[key]}
+        diff[key] = {status: 'deleted', old: file1[key], new: null, children: null}
       }
       else if (!in1) {
-        diff[key] = {status: 'added', data: file2[key]}
+        diff[key] = {status: 'added', old: null, new: file2[key], children: null}
       }
       else {
         if (isPlainObject(val1) && isPlainObject(val2)) {
-          diff[key] = {status: 'nested', data: makeDiff(val1, val2)}
+          diff[key] = {status: 'nested', old: null, new: null, children: makeDiff(val1, val2)}
         } else if (val1 === val2) {
-          diff[key] = {status: 'unchanged', data: file1[key]}
+          diff[key] = {status: 'unchanged', old: file1[key], new: null, children: null}
         } else {
-          diff[key] = {status: 'changed', data: [file1[key], file2[key]]}
+          diff[key] = {status: 'changed', old: file1[key], new: file2[key], children: null}
         }
       }
     }
