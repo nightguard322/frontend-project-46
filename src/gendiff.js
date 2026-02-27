@@ -2,6 +2,7 @@
 import { Command } from 'commander'
 import { parse } from './parsers/parser.js';
 import {stylish} from './formatters/stylish.js'
+import plain from './formatters/plain.js'
 import isPlainObject from './functions.js'
 
 const gendiff = () => {
@@ -17,7 +18,7 @@ const gendiff = () => {
       const options = c.opts()
       const diff = makeDiff(parse(filepath1), parse(filepath2))
     // console.log(JSON.stringify(diff, null, 2))
-    console.log(stylish(diff))
+    console.log(plain(diff))
     })
   
   c.parse()
