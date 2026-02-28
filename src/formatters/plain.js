@@ -1,42 +1,36 @@
 import isPlainObject from '../functions.js'
 
 export default (diff) => {
-    const getData = (v, k) => {
-        const status = v.status ?? 'none'
-        if (status === 'deleted')
-            return `Property '${k}' was removed`
+    const prepare = (v) => {
+        return isPlainObject(v) ? '[complex value]' : v
+    }
 
-        switch(status) {
-            case 'added':
-                v = isPlainObject(v.new) ? '[complex value]' : v.new
-                console.log('added >>>', `Property '${k}' was added with value: ${v}`)
-                return `Property '${k}' was added with value: ${v}`
-            case 'changed': 
-                Object.keys(v).forEach((innerK) => {
-                    if (isPlainObject(v[innerK])) {
-                        v[innerK] = '[complex value]'
-                    }
-                })
-                console.log('changed >>>>', `Property '${k}' was updated. From ${v.old} to ${v.new}`)
-                return `Property '${k}' was updated. From ${v.old} to ${v.new}`
-            case 'nested':
-                const children = v.children
-                const res = Object.keys(children).map(childName => getData(children[childName], `${k}.${childName}`))
-                console.log('nested >>>>', res)
-                return res.join('\n')
-            default: 
-                console.log('Undefined??>>>>>')
-                return ''
+    const render = (name, node) => {
+        const actions = {
+            'added': (node) => `Property '${name}' was added with value: ${prepare(node.new)}`,
+            'deleted': () => `Property '${name}' was removed`,
+            'changed': (node) => `Property '${name}' was updated. From ${prepare(node.old)} to ${prepare(node.new)}`
+        }
+        const status = node.status
+        if (status in actions) {
+            return actions[status](node)
+        }
+    }
+    const traverse = (parentName, node, fullpath = '') => {
+        fullpath = fullpath.length === 0 ? parentName : `${fullpath}.${parentName}`
+        if (node.status) {
+            if (node.status === 'nested') {
+                const children = node.children
+                const lines = Object.keys(children)
+                    .map(name => traverse(name, children[name], fullpath))
+                    .filter(line => line)
+                return lines.join('\n')
+            }
+            return render(fullpath, node)
         }
     }
 
-        const lines = Object.keys(diff).reduce(
-            (res, k) => { //k = common
-                const v = diff[k] //status + oldV+ newV+ children
-                res.push(getData(v, k))
-                return res
-            }, []
-        )
+    const lines = Object.keys(diff)
+        .map(name => traverse(name, diff[name]))
     return lines.join('\n')
 }
-//
