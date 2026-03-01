@@ -3,6 +3,7 @@ import { Command } from 'commander'
 import { parse } from './parsers/parser.js';
 import {stylish} from './formatters/stylish.js'
 import plain from './formatters/plain.js'
+import toJson from './formatters/json.js'
 import isPlainObject from './functions.js'
 
 const gendiff = () => {
@@ -14,16 +15,22 @@ const gendiff = () => {
     .option('-f, --format [type]', 'output format', 'stylish')
     .argument('filepath1')
     .argument('filepath2')
-    .action((filepath1, filepath2) => {
+    .argument('[formatName]', 'Let me know format output', 'stylish')
+    .action((filepath1, filepath2, formatName) => {
       const options = c.opts()
       const diff = makeDiff(parse(filepath1), parse(filepath2))
-    // console.log(JSON.stringify(diff, null, 2))
-    console.log(plain(diff))
+      const formatter = chooseFormat[formatName]
+      console.log(formatter(diff))
     })
   
   c.parse()
 }
 
+const chooseFormat = {
+  'stylish': diff => stylish(diff),
+  'plain': diff => plain(diff),
+  'json': diff => toJson(diff)
+}
 const makeDiff = (file1, file2) => {
   const sortedKeys = new Set(
     [...Object.keys(file1), ...Object.keys(file2)]
@@ -57,4 +64,4 @@ const makeDiff = (file1, file2) => {
   return diff
 }
 
-export { gendiff }
+export { makeDiff, gendiff }

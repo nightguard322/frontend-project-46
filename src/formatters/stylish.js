@@ -8,6 +8,7 @@ export const stylish = (diff) => {
         'unchanged': ' '
     }
     const spacer = ' '
+  
     const build = (innerDiff, innerLevel = 1) => {
         const spaces = spacer.repeat(innerLevel * 4 - 2)
         const print = (key, v, status) => {
@@ -21,7 +22,9 @@ export const stylish = (diff) => {
                 return `${newKey}: ${innerStr}`
             } else {
                 const newKey = `${indents[status]} ${key}`
-                return `${spaces}${newKey}: ${v}`
+                const str = String(v);
+                const normalizedV = str ? ' ' + str : str;
+                return `${spaces}${newKey}:${normalizedV}`
             }
         }
         const getData = (k, obj) => {
@@ -33,7 +36,7 @@ export const stylish = (diff) => {
                 case 'added': 
                     return print(k, obj.new, status)
                 case 'changed': return [
-                        print(k, obj.old, status), print(k, obj.new, status)
+                        print(k, obj.old, 'deleted'), print(k, obj.new, 'added')
                     ].join('\n')
                 case 'nested': return print(k, obj.children, status)
                 case 'plain': return print(k, obj.data, status)
@@ -53,26 +56,3 @@ export const stylish = (diff) => {
     return lines.join('\n')
 }
 
-    // return Object.keys(diff).reduce(
-    //     (acc, key) => {
-    //         const val = diff[key]
-    //         const status = val.status
-    //         const spaces = ' '.repeat(indentLevel * 4 - 2)
-    //         const data = val.data
-    //         if (status === 'changed') {
-    //             const delKey = `${spaces}${indents['deleted']} ${key}`
-    //             const addKey = `${spaces}${indents['added']} ${key}`
-    //             const [oldValue, newValue] = data
-    //             acc += [`${delKey}: ${oldValue}`, `${addKey}: ${newValue}`]
-    //         } else if (status === 'nested') {
-    //             const children = stylish(data, indentLevel + 1)
-    //             const newKey = `${indents['common']} ${key}`
-    //             const innerSpaces = spaces.repeat(2)
-    //             acc += [`${spaces}${newKey}: {`, `${innerSpaces}${children}`, `${spaces}}`]
-    //         } else {
-    //             const newKey = `${indents[status]} ${key}`
-    //             acc += `${spaces}${newKey}: ${data}`
-    //         }
-    //         return acc.join('\n')
-    //         }
-    // , [])

@@ -2,8 +2,14 @@ import isPlainObject from '../functions.js'
 
 export default (diff) => {
     const prepare = (v) => {
-        return isPlainObject(v) ? '[complex value]' : v
-    }
+        if (isPlainObject(v)) {
+            return '[complex value]'
+        }
+        if (v === null || typeof v === 'boolean') {
+            return v
+        }
+        return `'${v}'`
+        }
 
     const render = (name, node) => {
         const actions = {
@@ -22,7 +28,10 @@ export default (diff) => {
             if (node.status === 'nested') {
                 const children = node.children
                 const lines = Object.keys(children)
-                    .map(name => traverse(name, children[name], fullpath))
+                    .map(name => {
+                        const line = traverse(name, children[name], fullpath)
+                        return line ? line.trim() : ''
+                    })
                     .filter(line => line)
                 return lines.join('\n')
             }
