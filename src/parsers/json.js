@@ -11,5 +11,7 @@ export const parser = (filepath) => {
     if (err instanceof SyntaxError) {
       throw new Error(`file ${filepath} is not a valid JSON`, { cause: err })
     }
+    return {}
   }
+
 }

@@ -14,9 +14,9 @@ const gendiff = () => {
     .option('-f, --format [type]', 'output format', 'stylish')
     .argument('filepath1')
     .argument('filepath2')
-    .argument('[formatName]', 'Let me know format output', 'stylish')
-    .action((filepath1, filepath2, formatName) => {
+    .action((filepath1, filepath2, options) => {
       const diff = makeDiff(parse(filepath1), parse(filepath2))
+      const formatName = options.format
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
