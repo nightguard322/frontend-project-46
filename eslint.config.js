@@ -1,18 +1,11 @@
-import js from "@eslint/js";
-import globals, { jest } from "globals";
-import { defineConfig } from "eslint/config";
+import js from '@eslint/js'
+import globals from 'globals'
+import { defineConfig } from 'eslint/config'
+import stylistic from '@stylistic/eslint-plugin'
 
-export default [
-  {
-    files: ["**/*.{js,mjs,cjs}"],
-    plugins: { js, jest },
-    extends: ["js/recommended", 'plugin:jest/recommended'],
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-        ...globals.jest,  // ← Добавляем глобалы Jest (describe, test, it и т.д.)
-      },
-    },
-  },
-];
+export default defineConfig([
+  stylistic.configs.recommended,
+  { ignores: ['**/*.test.js', './esling.config.js'] },
+  { files: ['**/*.{js,mjs,cjs}'], plugins: { js }, extends: ['js/recommended'] },
+  { files: ['**/*.{js,mjs,cjs}'], languageOptions: { globals: globals.node } },
+])
