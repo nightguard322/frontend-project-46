@@ -5,7 +5,7 @@ export default (diff) => {
     if (isPlainObject(v)) {
       return '[complex value]'
     }
-    if (v === null || typeof v === 'boolean') {
+    if (v === null || typeof v === 'boolean' || v === 0) {
       return v
     }
     return `'${v}'`
