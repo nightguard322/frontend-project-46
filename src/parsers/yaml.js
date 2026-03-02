@@ -8,7 +8,7 @@ export const parser = (filepath) => {
     return JSON.parse(file)
   }
   catch (err) {
-    console.log('Пробуем парсить yaml по пути:', $filepath, 'но с файлом проблем!')
+    console.log('Пробуем парсить yaml по пути:', filepath, 'но с файлом проблем!')
     if (err instanceof SyntaxError) {
       throw new Error(`file ${filepath} is not a valid JSON`, { cause: err })
     }
