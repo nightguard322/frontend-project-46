@@ -23,9 +23,7 @@ export const stylish = (diff) => {
       }
       else {
         const newKey = `${indents[status]} ${key}`
-        const str = String(v)
-        const normalizedV = str ? ' ' + str : str
-        return `${spaces}${newKey}:${normalizedV}`
+        return `${spaces}${newKey}: ${v}`
       }
     }
     const getData = (k, obj) => {
