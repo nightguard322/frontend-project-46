@@ -41,5 +41,5 @@ export default (diff) => {
 
   const lines = Object.keys(diff)
     .map(name => traverse(name, diff[name]))
-  return lines.join('\n')
+  return lines.join('\n').trim()
 }

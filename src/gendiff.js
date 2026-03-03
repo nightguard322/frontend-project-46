@@ -52,7 +52,7 @@ export default (filepath1, filepath2, format = 'stylish') => {
     const action = chooseFormat[format]
     try {
       return action(diff)
-    } 
+    }
     catch(err) {
       console.log('Проблемы с форматом?', format, 'in', chooseFormat)
     }
