@@ -4,14 +4,6 @@ import plain from './formatters/plain.js'
 import toJson from './formatters/json.js'
 import isPlainObject from './functions.js'
 
-export default (filepath1, filepath2, format) => {
-    const file1 = parse(filepath1)
-    const file2 = parse(filepath2)
-    const diff = makeDiff(file1, file2)
-    return chooseFormat[format](diff)
-}
-
-
 const chooseFormat = {
   stylish: diff => stylish(diff),
   plain: diff => plain(diff),
@@ -51,3 +43,12 @@ const makeDiff = (file1, file2) => {
   )
   return diff
 }
+
+export default (filepath1, filepath2, format) => {
+    const file1 = parse(filepath1)
+    const file2 = parse(filepath2)
+    const diff = makeDiff(file1, file2)
+    const format = chooseFormat[format]
+    return format(diff)
+}
+
