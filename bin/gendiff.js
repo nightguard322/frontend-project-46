@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
-import gendiff from '../src/gendiff.js'
+import buildCli from '../src/gendiff.js'
 
-gendiff()
+const cli = buildCli();
+cli.parse();
