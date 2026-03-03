@@ -6,8 +6,8 @@ import toJson from './formatters/json.js'
 import isPlainObject from './functions.js'
 
 
-export default c = new Command()
-  c
+const c = new Command()
+  export default c
     .name('string-gendiff')
     .description('Compares two configuration files and shows a difference.')
     .version('0.1.0')
