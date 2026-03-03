@@ -50,10 +50,6 @@ export default (filepath1, filepath2, format = 'stylish') => {
   const file2 = parse(filepath2)
   const diff = makeDiff(file1, file2)
   const action = chooseFormat[format]
-  try {
     return action(diff)
-  }
-  catch (err) {
-    console.log('Проблемы с форматом?', format, 'in', chooseFormat)
-  }
+
 }
