@@ -20,6 +20,7 @@ export default () => {
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
+    return c
 }
 
 const chooseFormat = {
