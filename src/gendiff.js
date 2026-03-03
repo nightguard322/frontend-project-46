@@ -9,6 +9,7 @@ const chooseFormat = {
   plain: diff => plain(diff),
   json: diff => toJson(diff),
 }
+
 const makeDiff = (file1, file2) => {
   const sortedKeys = new Set(
     [...Object.keys(file1), ...Object.keys(file2)]
@@ -48,7 +49,7 @@ export default (filepath1, filepath2, format) => {
     const file1 = parse(filepath1)
     const file2 = parse(filepath2)
     const diff = makeDiff(file1, file2)
-    const format = chooseFormat[format]
-    return format(diff)
+    const action = chooseFormat[format]
+    return action(diff)
 }
 
