@@ -54,7 +54,7 @@ export default (filepath1, filepath2, format) => {
       return action(diff)
     } 
     catch(err) {
-      console.log('Проблемы с форматом?', action)
+      console.log('Проблемы с форматом?', format, 'in', chooseFormat)
     }
   
 }
