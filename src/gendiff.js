@@ -18,7 +18,7 @@ import isPlainObject from './functions.js'
       const diff = makeDiff(parse(filepath1), parse(filepath2))
       const formatName = options.format
       const formatter = chooseFormat[formatName]
-      console.log(formatter(diff))
+      formatter(diff)
     })
 
 
