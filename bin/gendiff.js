@@ -2,5 +2,5 @@
 
 import buildCli from '../src/cli.js'
 
-const cli = buildCli();
-cli.parse();
+const cli = buildCli()
+cli.parse()

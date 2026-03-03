@@ -13,5 +13,4 @@ export const parser = (filepath) => {
     }
     return {}
   }
-
 }
