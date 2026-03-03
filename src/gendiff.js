@@ -5,7 +5,7 @@ import plain from './formatters/plain.js'
 import toJson from './formatters/json.js'
 import isPlainObject from './functions.js'
 
-
+const gendiff = () => {
   const c = new Command()
   c
     .name('string-gendiff')
@@ -20,7 +20,7 @@ import isPlainObject from './functions.js'
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
-
+}
 
 const chooseFormat = {
   stylish: diff => stylish(diff),
@@ -62,4 +62,4 @@ const makeDiff = (file1, file2) => {
   return diff
 }
 
-export { makeDiff, c }
+export { makeDiff, gendiff }
