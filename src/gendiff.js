@@ -21,6 +21,7 @@ const c = new Command()
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
+    c.parse()
     return c
   }
 
