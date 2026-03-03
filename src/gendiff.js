@@ -7,7 +7,8 @@ import isPlainObject from './functions.js'
 
 
 const c = new Command()
-  export default c
+  export default () => {
+    c
     .name('string-gendiff')
     .description('Compares two configuration files and shows a difference.')
     .version('0.1.0')
@@ -20,7 +21,8 @@ const c = new Command()
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
-
+    return c
+  }
 
 const chooseFormat = {
   stylish: diff => stylish(diff),
