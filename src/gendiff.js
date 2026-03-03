@@ -45,7 +45,7 @@ const makeDiff = (file1, file2) => {
   return diff
 }
 
-export default (filepath1, filepath2, format) => {
+export default (filepath1, filepath2, format = 'stylish') => {
     const file1 = parse(filepath1)
     const file2 = parse(filepath2)
     const diff = makeDiff(file1, file2)
