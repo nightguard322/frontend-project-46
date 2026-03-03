@@ -5,8 +5,8 @@ import plain from './formatters/plain.js'
 import toJson from './formatters/json.js'
 import isPlainObject from './functions.js'
 
-export default () => {
-  const c = new Command()
+
+export default c = new Command()
   c
     .name('string-gendiff')
     .description('Compares two configuration files and shows a difference.')
@@ -20,8 +20,7 @@ export default () => {
       const formatter = chooseFormat[formatName]
       console.log(formatter(diff))
     })
-    return c
-}
+
 
 const chooseFormat = {
   stylish: diff => stylish(diff),
