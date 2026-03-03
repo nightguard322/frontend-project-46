@@ -21,7 +21,6 @@ const gendiff = () => {
       console.log(formatter(diff))
     })
 
-  c.parse()
 }
 
 const chooseFormat = {
